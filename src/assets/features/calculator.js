@@ -84,7 +84,7 @@ class Calculator {
   }
 
   displayMemory() {
-    this.buffer = this.memory.toString();
+    this.buffer += this.memory.toString();
   }
 
   bufferIsAllNumber() {
@@ -104,8 +104,11 @@ class Calculator {
   }
 
   execOperation() {
-    let { numbers, operators } = this.parseBuffer();
+    let [numbers, operators] = this.parseBuffer();
     this.addToStack(numbers, operators);
+    let result = this.operate();
+    this.buffer = result.toString();
+    this.stack = [];
   }
 
   parseBuffer() {
@@ -115,16 +118,43 @@ class Calculator {
       cleanBuffer = cleanBuffer.slice(0, cleanBuffer.length - 1);
 
     let numbers = cleanBuffer.split(/[-+*\/]+/);
+    numbers = numbers.filter((element) => element !== "");
     let operators = cleanBuffer.split(/[\d.]+/);
-    operators = operators.slice(1, operators.length - 1);
+    operators = operators.filter((element) => element !== "");
     let convertedNumbers = numbers.map((n) => parseFloat(n));
 
-    console.log(cleanBuffer);
-    return { convertedNumbers, operators };
+    return [convertedNumbers, operators];
   }
 
   addToStack(numbers, operators) {
     let [numCount, operatorCount] = [0, 0];
+
+    console.log(numbers, operators);
+    if (numbers.length !== operators.length) {
+      this.stack.unshift(numbers[numCount]);
+      numCount++;
+    }
+
+    while (numCount < numbers.length) {
+      let num = numbers[numCount];
+      numCount++;
+      let operator = operators[operatorCount];
+      operatorCount++;
+
+      if (operator === "+" || operator === "-") {
+        this.stack.unshift(new UnaryOperator(num, operator));
+      } else {
+        let lastInStack = this.stack.shift();
+        this.stack.unshift(new BinaryOperator(lastInStack, num, operator));
+      }
+    }
+  }
+
+  operate() {
+    return this.stack.reduce((accumulator, current) => {
+      if (isNaN(current)) return accumulator + current.solve();
+      else return accumulator + current;
+    }, 0);
   }
 }
 
