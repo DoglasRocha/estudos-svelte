@@ -28,6 +28,11 @@
         calculator.subtractFromMemory();
         calculator = calculator;
     }
+
+    function execOperation() {
+        calculator.execOperation();
+        calculator = calculator;
+    }
 </script>
 
 <section class="calculator">
@@ -51,7 +56,7 @@
     <Element text="0" on:click={() => updateBuffer("0")}/>
     <Element text="." on:click={() => updateBuffer(".")}/>
     <Element text="-" on:click={() => updateBuffer("-")}/>
-    <Element text="="/>
+    <Element text="=" on:click={execOperation}/>
 </section>
 
 <style>
