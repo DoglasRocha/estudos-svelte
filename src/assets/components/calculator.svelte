@@ -9,6 +9,11 @@
         calculator = calculator;
     }
 
+    function eraseLastFromBuffer() {
+        calculator.eraseFromBuffer();
+        calculator = calculator;
+    }
+
     function clearBuffer() {
         calculator.clearBuffer();
         calculator = calculator;
@@ -37,8 +42,9 @@
 
 <section class="calculator">
     <Element class="visor" text={calculator.getBuffer()}/>
-    <Element text="C" on:click={clearBuffer}/>
-    <Element text="M" on:click={displayMemory}/>
+    <Element class="btn-size-2-start" text="Erase" on:click={eraseLastFromBuffer}/>
+    <Element class="btn-size-2-end" text="Clear" on:click={clearBuffer}/>
+    <Element class="btn-size-2-start" text="M" on:click={displayMemory}/>
     <Element text="M+" on:click={addToMemory}/>
     <Element text="M-" on:click={substractFromMemory}/>
     <Element text="7" on:click={() => updateBuffer("7")}/>
@@ -69,8 +75,8 @@
         display: grid;
         border: 1px solid #efefef;
         padding: 2px;
-        grid-template-columns: auto auto auto auto;
-        grid-template-rows: auto auto auto auto auto;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(7, 1fr);
         max-width: 50vw;
         width: 50vw;
     }
@@ -81,5 +87,13 @@
         display: flex;
         align-items: center;
         justify-content: right;
+    }
+
+    .calculator :global(.btn-size-2-start) {
+        grid-column: 1 / 3;
+    }
+
+    .calculator :global(.btn-size-2-end) {
+        grid-column : 3 / 5;
     }
 </style>

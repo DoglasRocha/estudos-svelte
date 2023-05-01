@@ -75,6 +75,10 @@ class Calculator {
     this.buffer += newChar;
   }
 
+  eraseFromBuffer() {
+    this.buffer = this.buffer.slice(0, this.buffer.length - 1);
+  }
+
   clearBuffer() {
     this.buffer = "";
   }
@@ -84,7 +88,8 @@ class Calculator {
   }
 
   displayMemory() {
-    this.buffer += this.memory.toString();
+    this.buffer +=
+      this.memory >= 0 ? "+" + this.memory.toString() : this.memory.toString();
   }
 
   bufferIsAllNumber() {
