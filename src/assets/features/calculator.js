@@ -93,6 +93,7 @@ class Calculator {
   }
 
   bufferIsAllNumber() {
+    // @ts-ignore
     return !isNaN(this.buffer) && !isNaN(parseFloat(this.buffer));
   }
 
